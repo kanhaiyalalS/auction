@@ -1,0 +1,88 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: learnerkanhaiya
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: test
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: auction
+
+plugins:
+  #- serverless-offline
+  #- serverless-pseudo-parameters
+  #- serverless-esbuild
+  #  - serverless-aws-documentation
+
+# "custom" allows you to define custom variables and configurations for your service.
+custom:
+  AUCTION_TABLE: ${self:service}-${self:provider.stage}-AuctionTable
+  DBdetail:
+    tableName: !Ref AuctionTable
+    arn: !GetAtt AuctionTable.Arn
+  
+  
+
+# "provider" defines the cloud provider and runtime environment for your functions.
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-south-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    AUCTION_TABLE: ${self:custom.DBdetail.tableName}
+    region: ${self:provider.region}
+  iamRoleStatements:
+    - ${file(./IAM/auctionPermission.yaml):AuctionTablePermission}
+  memorySize: 256
+  #timeout: 10
+
+
+package:
+  individually: true
+  
+
+functions:
+  createAuction:
+    name: ${self:service}-${self:provider.stage}-createAuction
+    handler: src/createAuction.create
+    events:
+      - http:
+          path: auctions
+          method: post
+    package:
+      exclude:
+        - node_modules/**
+      patterns:
+        - '!**/*'
+        - 'package*.json'
+  
+  getAuction:
+    name: ${self:service}-${self:provider.stage}-getAuction
+    handler: src/getAuction.get
+    events:
+      - http:
+          path: auctions
+          method: get
+    package:
+      exclude:
+        - node_modules/**
+      patterns:
+        - '!**/*'
+        - 'package*.json'
+
+  getAuctionById:
+    name: ${self:service}-${self:provider.stage}-getAuctionById
+    handler: src/getAuctionById.getById
+    events:
+      - http:
+          path: auctions/{id}
+          method: get
+    package:
+      exclude:
+        - node_modules/**
+      patterns:
+        - '!**/*'
+        - 'package*.json'
+
+resources:
+  Resources:
+    # This is an example of how to define a DynamoDB table resource.
+    AuctionTable: ${file(./Resources/resource.yaml):AuctionTable}

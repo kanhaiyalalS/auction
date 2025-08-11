@@ -1,0 +1,7 @@
+AuctionTablePermission:
+    Effect: Allow
+    Action:
+      - dynamodb:PutItem
+      - dynamodb:Scan
+      - dynamodb:GetItem
+    Resource: ${self:custom.DBdetail.arn}

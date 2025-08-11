@@ -1,0 +1,33 @@
+{
+  "name": "auction",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "@middy/core": "^6.4.1",
+    "@middy/http-error-handler": "^6.4.1",
+    "@middy/http-event-normalizer": "^6.4.1",
+    "@middy/http-json-body-parser": "^6.4.1",
+    "@middy/http-router": "^6.4.1",
+    "@types/uuid": "^10.0.0",
+    "aws-cdk": "^2.1024.0",
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1692.0",
+    "express": "^4.19.2",
+    "http-errors": "^2.0.0",
+    "serverless": "^4.18.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.152",
+    "@types/aws-sdk": "^0.0.42",
+    "@types/http-errors": "^2.0.5",
+    "@types/node": "^24.2.1",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2",
+    "webpack-node-externals": "^3.0.0",
+    "workbox-webpack-plugin": "^7.3.0"
+  }
+}
